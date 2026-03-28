@@ -9,6 +9,7 @@ import javafx.scene.shape.Circle;
 import org.example.Controller.GameController;
 import org.example.GUI.GameGUI;
 import org.example.GUI.HudGUI;
+import org.example.GUI.MainGUI;
 import org.example.entities.Board;
 
 import javafx.stage.*;
@@ -19,9 +20,7 @@ public class Main extends Application {
 
     private Pane root;
 
-    private GameGUI gameGUI;
-
-    private HudGUI hudGUI;
+    private MainGUI mainGUI;
 
     private GameController gameController;
 
@@ -47,27 +46,14 @@ public class Main extends Application {
         this.stage.setScene(scene);
         this.stage.show();
 
-        //Initialize HUD
-        this.hudGUI = new HudGUI();
-
         //Initialize game:
+        //TODO this should be changed to a menu press:
         this.gameController = new GameController();
         gameController.startGame();
 
+        mainGUI = new MainGUI(gameController);
 
-        gameGUI = new GameGUI(gameController);
-        gameGUI.update();
-
-        VBox vbox = new VBox(hudGUI, gameGUI);
-
-        this.root.getChildren().add(vbox);
-    }
-
-    /** Initializes GUI on window
-     *
-     */
-    public void addGUI(){
-
+        this.root.getChildren().add(mainGUI);
     }
 
     public static void main(String[] args) {

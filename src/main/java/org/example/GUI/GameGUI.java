@@ -1,17 +1,24 @@
 package org.example.GUI;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.example.Controller.GameController;
+import org.example.Controller.GameState;
 import org.example.entities.Board;
 import org.example.entities.BombField;
 import org.example.entities.Field;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameGUI extends GridPane {
 
@@ -22,7 +29,44 @@ public class GameGUI extends GridPane {
         this.gameController=gameController;
     }
 
+
     public void update(){
+
+        //Game is lost
+        if(gameController.getState()== GameState.HASLOST){
+            TextInputDialog scoreDialog = new TextInputDialog();
+            scoreDialog.setContentText("What is your name?");
+            scoreDialog.setHeaderText("You lost." + "\nRevealed fields: " + gameController.revealedFields + "\nOverall: ");
+            scoreDialog.showAndWait();
+
+            if(!scoreDialog.getResult().isBlank()){
+                //Save new score here
+            }
+
+            List<String> options = new ArrayList<>();
+            options.add("Start new game");
+            options.add("Close app");
+
+            ChoiceDialog nextChoice = new ChoiceDialog(options);
+            nextChoice.setHeaderText("New game?");
+            nextChoice.showAndWait();
+
+            String nextChoiceResult = nextChoice.getResult();
+            if(nextChoiceResult==null) return;
+
+            switch (nextChoiceResult){
+                case (options.get(0)) -> {
+                    //TODO Restart game here
+                }
+
+                case (options.get(1)) -> {
+                    Platform.exit();
+                }
+
+            }
+
+        }
+
         this.getChildren().clear();
 
         Board board = gameController.board;
@@ -93,10 +137,10 @@ public class GameGUI extends GridPane {
                 button.setOnMousePressed(
                         event-> {
                             if(event.getButton()== MouseButton.PRIMARY){
-                                gameController.board.revealField(board.getField(x,y));
+                                gameController.revealField(board.getField(x,y));
                                 update();
                             }else if(event.getButton()==MouseButton.SECONDARY){
-                                gameController.board.flagField(board.getField(x,y));
+                                gameController.flagField(board.getField(x,y));
                                 update();
                             }
                         }

@@ -1,5 +1,7 @@
 package org.example.entities;
 
+import org.example.Controller.GameController;
+
 import java.util.*;
 
 public class Board {
@@ -7,7 +9,9 @@ public class Board {
     private int amountOfFieldsY = 18;
     private Field[][] fields = new Field[amountOfFieldsX][amountOfFieldsY];
 
+
     public Board(){
+
         //Initialize board
         for(int i=0; i<amountOfFieldsX; i++){
             for(int j=0; j<amountOfFieldsY; j++){
@@ -124,18 +128,23 @@ public class Board {
         return neighbours;
     }
 
+    /** Reveal fields using BFS search.
+     *
+     * @param field
+     * @return -1 if hit a bomb. Otherwise the number of revealed fields
+     */
+    public int revealField(Field field){
 
-    public void revealField(Field field){
-
-        int x = field.x;
-        int y = field.y;
-
-        if(x>amountOfFieldsX || x<0 || y>amountOfFieldsY || y<0){
-            throw new IndexOutOfBoundsException("position must be inside of length");
-        }
+        int revealed = 0;
 
         //Reveal
         field.reveal();
+        revealed++;
+
+        //Hit a bomb
+        if(field instanceof BombField){
+            return -1;
+        }
 
         Queue<Field> queue = new ArrayDeque<Field>();
         field.revealed=true;
@@ -151,10 +160,12 @@ public class Board {
             for(Field neigh: getFieldNeighbours(field1)){
                 if(neigh.revealed) continue;
 
-                neigh.revealed=true;
+                neigh.reveal();
+                revealed++;
                 queue.add(neigh);
             }
         }
+        return revealed;
     }
 
     public void flagField(Field field){

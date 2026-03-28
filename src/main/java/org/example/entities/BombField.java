@@ -7,6 +7,6 @@ public class BombField extends Field{
 
     @Override
     public void reveal(){
-        //End game and reveal all fields left
+        revealed=true;
     }
 }

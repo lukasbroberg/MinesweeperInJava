@@ -16,7 +16,7 @@ public class Field {
     }
 
     public void reveal(){
-        if(!revealed){
+        if(!revealed || !isFlagged()){
             revealed = true;
         }
     }

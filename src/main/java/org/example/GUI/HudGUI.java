@@ -1,12 +1,17 @@
 package org.example.GUI;
 
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import org.example.Controller.GameController;
 
 public class HudGUI extends HBox {
+
+    private GameController gameController;
+
     private Label scoreLabel = new Label("Hello");
     private Label scoreText = new Label("0");
     private Label revealedFieldsLabel = new Label("revealed fields");
@@ -15,8 +20,12 @@ public class HudGUI extends HBox {
     private VBox scoreBox = new VBox(scoreLabel,scoreText);
     private VBox revealedFieldsBox = new VBox(revealedFieldsLabel, revealedFieldsText);
 
-    public HudGUI(){
+    public HudGUI(GameController gameController){
+        this.gameController=gameController;
+
         this.getChildren().addAll(scoreBox,revealedFieldsBox);
+
+        this.revealedFieldsText.textProperty().bind(Bindings.format("%d",gameController.revealedFields));
 
         this.revealedFieldsText.setBorder(new Border(
                 new BorderStroke(
@@ -34,6 +43,8 @@ public class HudGUI extends HBox {
                 ))
         );
 
+
+
         this.scoreText.setBorder(new Border(
                 new BorderStroke(
                         Color.rgb(255, 255, 255),  // top
@@ -49,6 +60,8 @@ public class HudGUI extends HBox {
                         Insets.EMPTY
                 ))
         );
+
+
 
 
     }

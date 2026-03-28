@@ -1,6 +1,6 @@
 package org.example.Controller;
 
-public enum gameState {
+public enum GameState {
     INTRO,
     RUNNING,
     HASWON,
