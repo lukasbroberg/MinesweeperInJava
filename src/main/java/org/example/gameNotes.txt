@@ -1,0 +1,40 @@
+### Rules for minesweeper ###
+1. Press a square. If there is a bomb, you lose.
+2. Otherwise it clears all neighbour squares up until the once that are adjacent to a bomb.
+3. The squares adjacent to a or multiple bomb field's gets assigned a number that represents how many neighbours are bombs.
+
+## Design patterns to use? ##
+- Simple factory for instantiating the board?
+- Observer pattern for the UI and entities?
+
+### Build ###
+Entities:
+* Class: Field
+    pos
+    revealed: bool
+    reveal()
+
+* Class: BombField extends Field
+    super()
+    @overwrite reveal() endGame;
+
+
+* Class: board
+    initFields
+    amountOfFieldsX
+    amountOfFieldsY
+
+Controllers:
+* Class: GameController
+    board
+    randomseed
+    initNewGame()
+    startGame()
+
+UI:
+* Class: GameView
+    window
+    gridpane?
+* Class: FieldView
+    field
+    click event -> Action
