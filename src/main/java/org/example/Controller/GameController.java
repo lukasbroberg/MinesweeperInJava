@@ -28,6 +28,10 @@ public class GameController {
      * @param field
      */
     public void revealField(Field field){
+        if(state==GameState.HASLOST){
+            return;
+        }
+        
         int revealed = this.board.revealField(field);
         if(revealed==-1){
             loseGame();
