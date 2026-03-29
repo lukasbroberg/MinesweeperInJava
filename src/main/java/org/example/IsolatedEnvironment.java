@@ -34,7 +34,7 @@ public class IsolatedEnvironment {
         System.out.println("---");
         board.getFieldNeighbours(middleField);
 
-        System.out.println(middleField.neighBombs);
+        System.out.println(middleField.getNeighBombs());
 
     }
 }

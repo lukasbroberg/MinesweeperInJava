@@ -78,7 +78,7 @@ public class Board {
                         totalNeighBombs+=1;
                     }
                 }
-                fields[i][j].neighBombs=totalNeighBombs;
+                fields[i][j].setNeighBombs(totalNeighBombs);
             }
         }
     }
@@ -137,9 +137,12 @@ public class Board {
 
         int revealed = 0;
 
+        if(field.isRevealed() || field.isFlagged()){
+            return 0;
+        }
+
         //Reveal
         field.reveal();
-        revealed++;
 
         //Hit a bomb
         if(field instanceof BombField){
@@ -147,18 +150,19 @@ public class Board {
         }
 
         Queue<Field> queue = new ArrayDeque<Field>();
-        field.revealed=true;
         queue.add(field);
+        revealed++;
+
 
         while (!queue.isEmpty()){
             Field field1 = queue.poll();
 
-            if(field1.neighBombs>0 || field1.isFlagged()){
+            if(field1.getNeighBombs()>0 || field1.isFlagged()){
                 continue;
             }
 
             for(Field neigh: getFieldNeighbours(field1)){
-                if(neigh.revealed) continue;
+                if(neigh.isRevealed() || neigh.isFlagged()) continue;
 
                 neigh.reveal();
                 revealed++;
@@ -172,7 +176,11 @@ public class Board {
         for(var i=0; i<amountOfFieldsX; i++){
             for(var j=0; j<amountOfFieldsY; j++){
                 if(fields[i][j] instanceof BombField){
-                    fields[i][j].reveal();
+                    try{
+                        fields[i][j].reveal();
+                    } catch (IllegalStateException e) {
+                        continue;
+                    }
                 }
             }
         }
@@ -186,31 +194,6 @@ public class Board {
         field.setFlagged(true);
     }
 
-    /*public ArrayList<Integer> bfs(ArrayList<ArrayList<Field>> adj){
-        int V = adj.size();
-        boolean[] visited = new boolean[V];
-        ArrayList<Integer> res = new ArrayList<>();
-
-        int src = 0;
-        Queue<Integer> q = new LinkedList<>();
-        visited[src]=true;
-        q.add(src);
-
-        while(!q.isEmpty()){
-            int curr = q.poll();
-            res.add(curr);
-
-            for(int i=0; i<adj.get(curr).size(); i++){
-                if(!visited[i]){
-                    visited[i] = true;
-                    q.add(i);
-                }
-            }
-        }
-        return res;
-
-
-    }*/
 
     /** Prints the field structure in the terminal
      * 1 = bomb, 0 = normal field

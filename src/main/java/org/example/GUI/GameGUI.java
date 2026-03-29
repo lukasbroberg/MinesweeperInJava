@@ -43,7 +43,7 @@ public class GameGUI extends GridPane {
             for(var j=0; j<board.getAmountOfFieldsY(); j++){
                 var field = board.getField(i,j);
 
-                Button button = new FieldGUI(field.revealed);
+                Button button = new FieldGUI(field.isRevealed());
                 setRowIndex(button,i);
                 setColumnIndex(button,j);
                 button.setMaxWidth(35.0);
@@ -56,11 +56,11 @@ public class GameGUI extends GridPane {
                 }
 
 
-                if(field.revealed){
+                if(field.isRevealed()){
                     if(field instanceof BombField){
                         button.setText("B");
                     }else{
-                        button.setText(String.valueOf(field.neighBombs));
+                        button.setText(String.valueOf(field.getNeighBombs()));
                     }
                     button.setDisable(true);
 
