@@ -20,6 +20,7 @@ public class GameController {
 
     public void loseGame(){
         state = GameState.HASLOST;
+        this.board.revealBombs();
     }
 
     /** revealField in Game Controller changes gameState based on the field

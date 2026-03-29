@@ -25,47 +25,14 @@ public class GameGUI extends GridPane {
     public GameController gameController;
     public Button[][] fieldButtons;
 
+
+
     public GameGUI(GameController gameController){
         this.gameController=gameController;
     }
 
 
     public void update(){
-
-        //Game is lost
-        if(gameController.getState()== GameState.HASLOST){
-            TextInputDialog scoreDialog = new TextInputDialog();
-            scoreDialog.setContentText("What is your name?");
-            scoreDialog.setHeaderText("You lost." + "\nRevealed fields: " + gameController.revealedFields + "\nOverall: ");
-            scoreDialog.showAndWait();
-
-            if(!scoreDialog.getResult().isBlank()){
-                //Save new score here
-            }
-
-            List<String> options = new ArrayList<>();
-            options.add("Start new game");
-            options.add("Close app");
-
-            ChoiceDialog nextChoice = new ChoiceDialog(options);
-            nextChoice.setHeaderText("New game?");
-            nextChoice.showAndWait();
-
-            String nextChoiceResult = nextChoice.getResult();
-            if(nextChoiceResult==null) return;
-
-            switch (nextChoiceResult){
-                case (options.get(0)) -> {
-                    //TODO Restart game here
-                }
-
-                case (options.get(1)) -> {
-                    Platform.exit();
-                }
-
-            }
-
-        }
 
         this.getChildren().clear();
 
@@ -151,5 +118,38 @@ public class GameGUI extends GridPane {
                 );
             }
         }
+
+
+        //Game is lost
+        if(gameController.getState()== GameState.HASLOST){
+            TextInputDialog scoreDialog = new TextInputDialog();
+            scoreDialog.setContentText("What is your name?");
+            scoreDialog.setHeaderText("You lost." + "\nRevealed fields: " + gameController.revealedFields + "\nOverall: ");
+            scoreDialog.showAndWait();
+
+            if(!scoreDialog.getResult().isBlank()){
+                //Save new score here
+            }
+
+
+            ChoiceDialog nextChoice = new ChoiceDialog("Start new game", "Close app");
+            nextChoice.setHeaderText("New game?");
+            nextChoice.showAndWait();
+
+            String nextChoiceResult = nextChoice.getResult().toString();
+            if(nextChoiceResult==null) return;
+
+            switch (nextChoiceResult.toLowerCase()){
+                case ("start new game") -> {
+                    //TODO Restart game here
+                }
+
+                case ("close app") -> {
+                    Platform.exit();
+                }
+
+            }
+        }
+
     }
 }

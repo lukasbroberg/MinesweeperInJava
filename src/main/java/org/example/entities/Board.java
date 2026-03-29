@@ -9,7 +9,6 @@ public class Board {
     private int amountOfFieldsY = 18;
     private Field[][] fields = new Field[amountOfFieldsX][amountOfFieldsY];
 
-
     public Board(){
 
         //Initialize board
@@ -59,7 +58,8 @@ public class Board {
         for(var i=0; i<amountOfBombs; i++){
             int randomX = (int) Math.floor(Math.random()*fields.length);
             int randomY = (int) Math.floor(Math.random()*fields[0].length);
-            fields[randomX][randomY]= new BombField(randomX,randomY);
+            BombField newBomb = new BombField(randomX, randomY);
+            fields[randomX][randomY]= newBomb;
         }
     }
 
@@ -166,6 +166,16 @@ public class Board {
             }
         }
         return revealed;
+    }
+
+    public void revealBombs(){
+        for(var i=0; i<amountOfFieldsX; i++){
+            for(var j=0; j<amountOfFieldsY; j++){
+                if(fields[i][j] instanceof BombField){
+                    fields[i][j].reveal();
+                }
+            }
+        }
     }
 
     public void flagField(Field field){
