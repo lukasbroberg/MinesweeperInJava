@@ -5,11 +5,16 @@ import org.example.Controller.GameController;
 import java.util.*;
 
 public class Board {
-    private int amountOfFieldsX = 18;
-    private int amountOfFieldsY = 18;
+    private int amountOfFieldsX = 3;
+    private int amountOfFieldsY = 3;
     private Field[][] fields = new Field[amountOfFieldsX][amountOfFieldsY];
 
+    public int totalAmountOfFields = amountOfFieldsX*amountOfFieldsY;
+    public List<BombField> bombFieldList;
+
     public Board(){
+
+        bombFieldList = new ArrayList<BombField>();
 
         //Initialize board
         for(int i=0; i<amountOfFieldsX; i++){
@@ -60,6 +65,7 @@ public class Board {
             int randomY = (int) Math.floor(Math.random()*fields[0].length);
             BombField newBomb = new BombField(randomX, randomY);
             fields[randomX][randomY]= newBomb;
+            bombFieldList.add(newBomb);
         }
     }
 

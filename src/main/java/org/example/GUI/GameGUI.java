@@ -2,16 +2,14 @@ package org.example.GUI;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.example.Controller.GameController;
 import org.example.Controller.GameState;
+import org.example.GUI.Dialogs.NextChoiceDialog;
 import org.example.entities.Board;
 import org.example.entities.BombField;
 import org.example.entities.Field;
@@ -122,33 +120,38 @@ public class GameGUI extends GridPane {
 
         //Game is lost
         if(gameController.getState()== GameState.HASLOST){
-            TextInputDialog scoreDialog = new TextInputDialog();
-            scoreDialog.setContentText("What is your name?");
-            scoreDialog.setHeaderText("You lost." + "\nRevealed fields: " + gameController.revealedFields + "\nOverall: ");
+            Alert scoreDialog = new Alert(Alert.AlertType.INFORMATION);
+            scoreDialog.setContentText("You lost");
+            scoreDialog.setHeaderText("You lost." + "\nRevealed fields: " + gameController.revealedFields.getValue());
             scoreDialog.showAndWait();
 
-            if(!scoreDialog.getResult().isBlank()){
-                //Save new score here
-            }
+            NextChoiceDialog nextChoiceDialog = new NextChoiceDialog(
+                    gameController,
+                    () -> {
+                        gameController.startGame();
+                        update();
+                        },
+                    () -> {Platform.exit();}
+            );
+            nextChoiceDialog.show();
+        }
 
+        if(gameController.getState()==GameState.HASWON){
+            Alert wonDialog = new Alert(Alert.AlertType.INFORMATION);
+            wonDialog.setContentText("You won");
+            wonDialog.setHeaderText("You won!" + "\nRevealed fields: " + gameController.revealedFields.getValue());
+            wonDialog.showAndWait();
 
-            ChoiceDialog nextChoice = new ChoiceDialog("Start new game", "Close app");
-            nextChoice.setHeaderText("New game?");
-            nextChoice.showAndWait();
+            NextChoiceDialog nextChoiceDialog = new NextChoiceDialog(
+                    gameController,
+                    () -> {
+                        gameController.startGame();
+                        update();
+                        },
+                    () -> {Platform.exit();}
+            );
+            nextChoiceDialog.show();
 
-            String nextChoiceResult = nextChoice.getResult().toString();
-            if(nextChoiceResult==null) return;
-
-            switch (nextChoiceResult.toLowerCase()){
-                case ("start new game") -> {
-                    //TODO Restart game here
-                }
-
-                case ("close app") -> {
-                    Platform.exit();
-                }
-
-            }
         }
 
     }

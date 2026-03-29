@@ -14,8 +14,13 @@ public class GameController {
     public IntegerProperty revealedFields = new SimpleIntegerProperty(0);
 
     public void startGame(){
-        state = GameState.RUNNING;
+        this.revealedFields.set(0);
         board = new Board();
+        state = GameState.RUNNING;
+    }
+
+    public void winGame(){
+        state = GameState.HASWON;
     }
 
     public void loseGame(){
@@ -31,14 +36,21 @@ public class GameController {
         if(state==GameState.HASLOST){
             return;
         }
-        
+
         int revealed = this.board.revealField(field);
+
+        //Check for losing here
         if(revealed==-1){
             loseGame();
             return;
         }
+
         revealedFields.set(revealedFields.getValue()+revealed);
-        //TODO: Check for winning here
+
+        //Check for winning here
+        if(revealedFields.getValue()==(board.totalAmountOfFields-board.bombFieldList.size())){
+            winGame();
+        }
     }
 
     public Enum getState() {
