@@ -20,7 +20,7 @@ public class GameController {
 
     public void startGame(int amountOfFieldsX, int amountOfFieldsY, int difficultyFactor){
         this.revealedFields.set(0);
-        int amountOfBombs = (int) Math.abs(amountOfFieldsX*amountOfFieldsX)/8;
+        int amountOfBombs = (int) Math.abs(amountOfFieldsX*amountOfFieldsX)/difficultyFactor;
         board = new Board(amountOfFieldsX,amountOfFieldsY, amountOfBombs);
         state = GameState.RUNNING;
     }
