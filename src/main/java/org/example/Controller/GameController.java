@@ -3,6 +3,7 @@ package org.example.Controller;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import org.example.entities.Board;
+import org.example.entities.BombField;
 import org.example.entities.Field;
 
 import java.util.ArrayList;
@@ -43,7 +44,18 @@ public class GameController {
             return;
         }
 
+        //Check for first reveal bomb:
+        if(this.revealedFields.getValue()==0 && field instanceof BombField){
+            int x = field.getX();
+            int y = field.getY();
+
+            this.board.createBomb(field.getX(),field.getY()); // Create duplicate Bomb to move the bomb.
+            this.board.setField(new Field(x, y),x,y);
+        }
+
         int revealed = this.board.revealField(field);
+
+
 
         //Check for losing here
         if(revealed==-1){
