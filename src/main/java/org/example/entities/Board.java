@@ -69,10 +69,36 @@ public class Board {
         for(var i=0; i<amountOfBombs; i++){
             int randomX = (int) Math.floor(Math.random()*fields.length);
             int randomY = (int) Math.floor(Math.random()*fields[0].length);
-            BombField newBomb = new BombField(randomX, randomY);
-            fields[randomX][randomY]= newBomb;
-            bombFieldList.add(newBomb);
+            BombField newBomb = createBomb(randomX,randomY);
         }
+    }
+
+    public BombField createBomb(int x, int y){
+        //Check if x and y is occupied by another bomb
+        //If position is occupied move one right. If out of border on x, move one down y.
+        //Use modulus
+        int next_x = x;
+        int next_y = y;
+
+        BombField newBomb = new BombField(x,y);
+
+        if(getField(next_x,next_y) instanceof BombField){
+            while(getField(next_x,next_y) instanceof BombField){
+                next_x = (next_x + 1) % (amountOfFieldsX);
+                if(next_x==0){
+                    next_y = (next_y+ 1)%(amountOfFieldsY);
+                }
+            }
+        }
+
+        newBomb.setX(next_x);
+        newBomb.setY(next_y);
+
+        fields[next_x][next_y]=newBomb;
+        bombFieldList.add(newBomb);
+
+        return newBomb;
+
     }
 
     /** Sets the value of each field to the amount of neighbouring bombs
@@ -214,7 +240,7 @@ public class Board {
         String boardString = "";
         for(var i=0; i<amountOfFieldsY; i++){
             for(var j=0; j<amountOfFieldsX; j++){
-                var instance = fields[i][j];
+                var instance = fields[j][i];
                 if(instance instanceof BombField){
                     boardString+="1";
                 }else{
