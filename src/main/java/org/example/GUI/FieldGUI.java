@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import org.example.entities.BombField;
 import org.example.entities.Field;
 
 public class FieldGUI extends Button {
@@ -12,8 +13,8 @@ public class FieldGUI extends Button {
     int size;
     int revealed = 0;
 
-    public FieldGUI(boolean isRevealed){
-        this.isRevealed=isRevealed;
+    public FieldGUI(Field field){
+        this.isRevealed=field.isRevealed();
 
         if(isRevealed){
             this.setBorder(new Border(
@@ -48,6 +49,48 @@ public class FieldGUI extends Button {
                         )
                 )
             );
+        }
+
+
+        if(field.isFlagged()){
+            this.setText("F");
+        }
+
+        if(field.isRevealed()) {
+            if (field instanceof BombField) {
+                this.setText("B");
+                this.setBackground(Background.fill(Color.rgb(255, 0, 0)));
+                this.setTextFill(Color.rgb(255, 255, 255));
+            } else {
+                if (field.getNeighBombs() == 0) {
+                    this.setText("");
+                } else {
+                    this.setText(String.valueOf(field.getNeighBombs()));
+                }
+                Color color;
+                switch (field.getNeighBombs()) {
+                    case 1:
+                        color = Color.rgb(0, 0, 255);
+                        break;
+                    case 2:
+                        color = Color.rgb(0, 255, 0);
+                        break;
+                    case 3:
+                        color = Color.rgb(255, 0, 0);
+                        break;
+                    case 4:
+                        color = Color.rgb(0, 0, 200);
+                        break;
+                    default:
+                        color = Color.rgb(162, 48, 255);
+                        break;
+                }
+                this.setTextFill(color);
+            }
+            this.setDisable(true);
+            this.setStyle("""
+                                 -fx-opacity: 1.0;
+                            """);
         }
     }
 

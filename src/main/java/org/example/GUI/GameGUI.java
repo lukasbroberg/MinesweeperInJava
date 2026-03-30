@@ -48,7 +48,7 @@ public class GameGUI extends GridPane {
             for(var j=0; j<board.getAmountOfFieldsY(); j++){
                 var field = board.getField(i,j);
 
-                Button button = new FieldGUI(field.isRevealed());
+                Button button = new FieldGUI(field);
                 setRowIndex(button,i);
                 setColumnIndex(button,j);
                 button.setMaxWidth(35.0);
@@ -56,46 +56,6 @@ public class GameGUI extends GridPane {
                 button.setMinWidth(35.0);
                 button.setMinHeight(35.0);
 
-                if(field.isFlagged()){
-                    button.setText("F");
-                }
-
-                if(field.isRevealed()) {
-                    if (field instanceof BombField) {
-                        button.setText("B");
-                        button.setBackground(Background.fill(Color.rgb(255, 0, 0)));
-                        button.setTextFill(Color.rgb(255, 255, 255));
-                    } else {
-                        if (field.getNeighBombs() == 0) {
-                            button.setText("");
-                        } else {
-                            button.setText(String.valueOf(field.getNeighBombs()));
-                        }
-                        Color color;
-                        switch (field.getNeighBombs()) {
-                            case 1:
-                                color = Color.rgb(0, 0, 255);
-                                break;
-                            case 2:
-                                color = Color.rgb(0, 255, 0);
-                                break;
-                            case 3:
-                                color = Color.rgb(255, 0, 0);
-                                break;
-                            case 4:
-                                color = Color.rgb(0, 0, 200);
-                                break;
-                            default:
-                                color = Color.rgb(162, 48, 255);
-                                break;
-                        }
-                        button.setTextFill(color);
-                    }
-                    button.setDisable(true);
-                    button.setStyle("""
-                                 -fx-opacity: 1.0;
-                            """);
-                }
                 int x = i;
                 int y = j;
 
