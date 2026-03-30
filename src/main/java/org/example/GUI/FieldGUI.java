@@ -15,21 +15,40 @@ public class FieldGUI extends Button {
     public FieldGUI(boolean isRevealed){
         this.isRevealed=isRevealed;
 
-        this.setBorder(new Border(
-                new BorderStroke(
-                        Color.rgb(20, 20, 20),  // top
-                        Color.rgb(20, 20, 20),  // right
-                        Color.rgb(20, 20, 20),  // bottom
-                        Color.rgb(20, 20, 20),  // left
-                        BorderStrokeStyle.SOLID,
-                        BorderStrokeStyle.SOLID,
-                        BorderStrokeStyle.SOLID,
-                        BorderStrokeStyle.SOLID,
-                        CornerRadii.EMPTY,
-                        new BorderWidths(1),
-                        Insets.EMPTY
+        if(isRevealed){
+            this.setBorder(new Border(
+                    new BorderStroke(
+                            Color.rgb(20, 20, 20),  // top
+                            Color.rgb(20, 20, 20),  // right
+                            Color.rgb(20, 20, 20),  // bottom
+                            Color.rgb(20, 20, 20),  // left
+                            BorderStrokeStyle.SOLID,
+                            BorderStrokeStyle.SOLID,
+                            BorderStrokeStyle.SOLID,
+                            BorderStrokeStyle.SOLID,
+                            CornerRadii.EMPTY,
+                            new BorderWidths(1),
+                            Insets.EMPTY
+                    )
+            ));
+        }else{
+            this.setBorder(new Border(
+                        new BorderStroke(
+                                Color.rgb(255, 255, 255),  // top
+                                Color.rgb(128, 128, 128),  // right
+                                Color.rgb(128, 128, 128),  // bottom
+                                Color.rgb(255, 255, 255),  // left
+                                BorderStrokeStyle.SOLID,
+                                BorderStrokeStyle.SOLID,
+                                BorderStrokeStyle.SOLID,
+                                BorderStrokeStyle.SOLID,
+                                CornerRadii.EMPTY,
+                                new BorderWidths(2),
+                                Insets.EMPTY
+                        )
                 )
-        ));
+            );
+        }
     }
 
 

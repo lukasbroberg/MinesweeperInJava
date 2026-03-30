@@ -15,15 +15,17 @@ public class GameController {
 
     private Enum state = GameState.INTRO;
 
-    public IntegerProperty revealedFields = new SimpleIntegerProperty(0);
+    public IntegerProperty revealedFieldsCounter = new SimpleIntegerProperty(0);
+    public IntegerProperty amountOfBombsLeftCounter = new SimpleIntegerProperty(0);
 
     public List<String> difficulty = List.of("easy", "normal", "hard");
 
     public void startGame(int amountOfFieldsX, int amountOfFieldsY, int difficultyFactor){
-        this.revealedFields.set(0);
+        this.revealedFieldsCounter.set(0);
         int amountOfBombs = (int) Math.abs(amountOfFieldsX*amountOfFieldsX)/difficultyFactor;
         board = new Board(amountOfFieldsX,amountOfFieldsY, amountOfBombs);
         state = GameState.RUNNING;
+        amountOfBombsLeftCounter.set(board.bombFieldList.size());
     }
 
     public void winGame(){
@@ -45,7 +47,7 @@ public class GameController {
         }
 
         //Check for first reveal bomb:
-        if(this.revealedFields.getValue()==0 && field instanceof BombField){
+        if(this.revealedFieldsCounter.getValue()==0 && field instanceof BombField){
             int x = field.getX();
             int y = field.getY();
 
@@ -63,10 +65,10 @@ public class GameController {
             return;
         }
 
-        revealedFields.set(revealedFields.getValue()+revealed);
+        revealedFieldsCounter.set(revealedFieldsCounter.getValue()+revealed);
 
         //Check for winning here
-        if(revealedFields.getValue()==(board.totalAmountOfFields-board.bombFieldList.size())){
+        if(revealedFieldsCounter.getValue()==(board.totalAmountOfFields-board.bombFieldList.size())){
             winGame();
         }
     }
@@ -77,6 +79,7 @@ public class GameController {
 
     public void flagField(Field field){
         this.board.flagField(field);
+        amountOfBombsLeftCounter.set(amountOfBombsLeftCounter.getValue()-1);
     }
 
 }

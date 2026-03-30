@@ -7,6 +7,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.example.Controller.GameController;
 import org.example.Controller.GameState;
 import org.example.GUI.Dialogs.NewGameDialog;
@@ -23,11 +24,16 @@ public class GameGUI extends GridPane {
 
     public GameController gameController;
     public Button[][] fieldButtons;
+    private Stage mainStage;
 
 
 
-    public GameGUI(GameController gameController){
+    public GameGUI(GameController gameController, Stage mainStage){
         this.gameController=gameController;
+        this.mainStage=mainStage;
+
+        this.setBackground(Background.fill(Color.rgb(225,225,225)));
+        this.setPadding(new Insets(25,25,25,20));
     }
 
 
@@ -54,32 +60,42 @@ public class GameGUI extends GridPane {
                     button.setText("F");
                 }
 
-                if(field.isRevealed()){
-                    if(field instanceof BombField){
+                if(field.isRevealed()) {
+                    if (field instanceof BombField) {
                         button.setText("B");
-                    }else{
-                        button.setText(String.valueOf(field.getNeighBombs()));
+                        button.setBackground(Background.fill(Color.rgb(255, 0, 0)));
+                        button.setTextFill(Color.rgb(255, 255, 255));
+                    } else {
+                        if (field.getNeighBombs() == 0) {
+                            button.setText("");
+                        } else {
+                            button.setText(String.valueOf(field.getNeighBombs()));
+                        }
+                        Color color;
+                        switch (field.getNeighBombs()) {
+                            case 1:
+                                color = Color.rgb(0, 0, 255);
+                                break;
+                            case 2:
+                                color = Color.rgb(0, 255, 0);
+                                break;
+                            case 3:
+                                color = Color.rgb(255, 0, 0);
+                                break;
+                            case 4:
+                                color = Color.rgb(0, 0, 200);
+                                break;
+                            default:
+                                color = Color.rgb(162, 48, 255);
+                                break;
+                        }
+                        button.setTextFill(color);
                     }
                     button.setDisable(true);
-
-                }else{
-                    button.setBorder(new Border(
-                            new BorderStroke(
-                                    Color.rgb(255, 255, 255),  // top
-                                    Color.rgb(128, 128, 128),  // right
-                                    Color.rgb(128, 128, 128),  // bottom
-                                    Color.rgb(255, 255, 255),  // left
-                                    BorderStrokeStyle.SOLID,
-                                    BorderStrokeStyle.SOLID,
-                                    BorderStrokeStyle.SOLID,
-                                    BorderStrokeStyle.SOLID,
-                                    CornerRadii.EMPTY,
-                                    new BorderWidths(2),
-                                    Insets.EMPTY
-                            )
-                    ));
+                    button.setStyle("""
+                                 -fx-opacity: 1.0;
+                            """);
                 }
-
                 int x = i;
                 int y = j;
 
@@ -106,7 +122,7 @@ public class GameGUI extends GridPane {
         if(gameController.getState()== GameState.HASLOST){
             Alert scoreDialog = new Alert(Alert.AlertType.INFORMATION);
             scoreDialog.setContentText("You lost");
-            scoreDialog.setHeaderText("You lost." + "\nRevealed fields: " + gameController.revealedFields.getValue());
+            scoreDialog.setHeaderText("You lost." + "\nRevealed fields: " + gameController.revealedFieldsCounter.getValue());
             scoreDialog.showAndWait();
 
             NextChoiceDialog nextChoiceDialog = new NextChoiceDialog(
@@ -122,7 +138,7 @@ public class GameGUI extends GridPane {
         if(gameController.getState()==GameState.HASWON){
             Alert wonDialog = new Alert(Alert.AlertType.INFORMATION);
             wonDialog.setContentText("You won");
-            wonDialog.setHeaderText("You won!" + "\nRevealed fields: " + gameController.revealedFields.getValue());
+            wonDialog.setHeaderText("You won!" + "\nRevealed fields: " + gameController.revealedFieldsCounter.getValue());
             wonDialog.showAndWait();
 
             NextChoiceDialog nextChoiceDialog = new NextChoiceDialog(
@@ -146,5 +162,8 @@ public class GameGUI extends GridPane {
                 }
         );
         newGameDialog.show();
+
+        mainStage.sizeToScene();
+
     }
 }

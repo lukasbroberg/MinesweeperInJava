@@ -40,20 +40,18 @@ public class Main extends Application {
 
         root = new Pane();
 
-        Scene scene = new Scene(this.root,800,800);
+        Scene scene = new Scene(this.root);
 
         this.stage.setTitle("Minesweeper");
         this.stage.setScene(scene);
         this.stage.show();
 
-        //Initialize game:
-        //TODO this should be changed to a menu press:
         this.gameController = new GameController();
-        gameController.startGame(8,8, 8);
 
-        mainGUI = new MainGUI(gameController);
+        mainGUI = new MainGUI(gameController, this.stage);
 
         this.root.getChildren().add(mainGUI);
+        stage.sizeToScene();
     }
 
     public static void main(String[] args) {
