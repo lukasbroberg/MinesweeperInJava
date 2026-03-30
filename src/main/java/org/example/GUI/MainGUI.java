@@ -19,7 +19,6 @@ public class MainGUI extends StackPane {
 
         hudGUI = new HudGUI(gameController);
         gameGUI = new GameGUI(gameController);
-        gameGUI.update();
 
         layout.setAlignment(Pos.TOP_CENTER);
         VBox.setVgrow(gameGUI, Priority.ALWAYS);
@@ -27,6 +26,8 @@ public class MainGUI extends StackPane {
         layout.getChildren().addAll(hudGUI,gameGUI);
 
         this.getChildren().add(layout);
+
+        gameGUI.startNewGame();
     }
 
 }

@@ -112,14 +112,7 @@ public class GameGUI extends GridPane {
             NextChoiceDialog nextChoiceDialog = new NextChoiceDialog(
                     gameController,
                     () -> {
-                        NewGameDialog newGameDialog = new NewGameDialog(
-                                gameController,
-                                (amountOfFieldsX,amountOfFieldsY, difficulty) -> {
-                                    gameController.startGame(amountOfFieldsX,amountOfFieldsY, difficulty);
-                                    update();
-                                }
-                        );
-                        newGameDialog.show();
+                            startNewGame();
                         },
                     () -> {Platform.exit();}
             );
@@ -135,20 +128,23 @@ public class GameGUI extends GridPane {
             NextChoiceDialog nextChoiceDialog = new NextChoiceDialog(
                     gameController,
                     () -> {
-                            NewGameDialog newGameDialog = new NewGameDialog(
-                                    gameController,
-                                    (amountOfFieldsX,amountOfFieldsY, difficulty) -> {
-                                        gameController.startGame(amountOfFieldsX,amountOfFieldsY, difficulty);
-                                        update();
-                                    }
-                            );
-                            newGameDialog.show();
+                            startNewGame();
                         },
                     () -> {Platform.exit();}
             );
             nextChoiceDialog.show();
 
         }
+    }
 
+    public void startNewGame(){
+        NewGameDialog newGameDialog = new NewGameDialog(
+                gameController,
+                (amountOfFieldsX,amountOfFieldsY, difficulty) -> {
+                    gameController.startGame(amountOfFieldsX,amountOfFieldsY, difficulty);
+                    update();
+                }
+        );
+        newGameDialog.show();
     }
 }
