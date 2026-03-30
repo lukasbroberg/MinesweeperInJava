@@ -5,20 +5,26 @@ import org.example.Controller.GameController;
 import java.util.*;
 
 public class Board {
-    private int amountOfFieldsX = 3;
-    private int amountOfFieldsY = 3;
-    private Field[][] fields = new Field[amountOfFieldsX][amountOfFieldsY];
+    private int amountOfFieldsX;
+    private int amountOfFieldsY;
+    private Field[][] fields;
 
-    public int totalAmountOfFields = amountOfFieldsX*amountOfFieldsY;
+    public int totalAmountOfFields;
     public List<BombField> bombFieldList;
 
-    public Board(){
+    public Board(int amountOfFieldsX, int amountOfFieldsY, int amountOfBombs){
 
-        bombFieldList = new ArrayList<BombField>();
+        this.bombFieldList = new ArrayList<BombField>();
+
+        this.amountOfFieldsX=amountOfFieldsX;
+        this.amountOfFieldsY=amountOfFieldsY;
+        this.totalAmountOfFields = amountOfFieldsX*amountOfFieldsY;
+
+        this.fields = new Field[amountOfFieldsX][amountOfFieldsY];
 
         //Initialize board
-        for(int i=0; i<amountOfFieldsX; i++){
-            for(int j=0; j<amountOfFieldsY; j++){
+        for(int i=0; i<this.amountOfFieldsX; i++){
+            for(int j=0; j<this.amountOfFieldsY; j++){
                 try{
                     fields[i][j] = new Field(i,j);
                 }catch(IllegalArgumentException err){
@@ -27,7 +33,7 @@ public class Board {
             }
         }
 
-        initializeBombs(fields,(int) Math.abs(amountOfFieldsX*amountOfFieldsY)/8);
+        initializeBombs(fields,amountOfBombs);
         initializeFieldValues(fields);
     }
 

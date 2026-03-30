@@ -49,7 +49,7 @@ public class Main extends Application {
         //Initialize game:
         //TODO this should be changed to a menu press:
         this.gameController = new GameController();
-        gameController.startGame();
+        gameController.startGame(8,8, 8);
 
         mainGUI = new MainGUI(gameController);
 

@@ -5,6 +5,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import org.example.entities.Board;
 import org.example.entities.Field;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class GameController {
     public Board board;
@@ -13,9 +16,12 @@ public class GameController {
 
     public IntegerProperty revealedFields = new SimpleIntegerProperty(0);
 
-    public void startGame(){
+    public List<String> difficulty = List.of("easy", "normal", "hard");
+
+    public void startGame(int amountOfFieldsX, int amountOfFieldsY, int difficultyFactor){
         this.revealedFields.set(0);
-        board = new Board();
+        int amountOfBombs = (int) Math.abs(amountOfFieldsX*amountOfFieldsX)/8;
+        board = new Board(amountOfFieldsX,amountOfFieldsY, amountOfBombs);
         state = GameState.RUNNING;
     }
 

@@ -12,7 +12,7 @@ public class IsolatedEnvironment {
         //Initialize game:
 
         //Setup board
-        Board board = new Board();
+        Board board = new Board(3,3, 0);
 
         board.setAmountOfFieldsX(3);
         board.setAmountOfFieldsY(3);

@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.example.Controller.GameController;
 import org.example.Controller.GameState;
+import org.example.GUI.Dialogs.NewGameDialog;
 import org.example.GUI.Dialogs.NextChoiceDialog;
 import org.example.entities.Board;
 import org.example.entities.BombField;
@@ -53,7 +54,6 @@ public class GameGUI extends GridPane {
                     button.setText("F");
                 }
 
-
                 if(field.isRevealed()){
                     if(field instanceof BombField){
                         button.setText("B");
@@ -61,22 +61,6 @@ public class GameGUI extends GridPane {
                         button.setText(String.valueOf(field.getNeighBombs()));
                     }
                     button.setDisable(true);
-
-                    button.setBorder(new Border(
-                            new BorderStroke(
-                                    Color.rgb(20, 20, 20),  // top
-                                    Color.rgb(20, 20, 20),  // right
-                                    Color.rgb(20, 20, 20),  // bottom
-                                    Color.rgb(20, 20, 20),  // left
-                                    BorderStrokeStyle.SOLID,
-                                    BorderStrokeStyle.SOLID,
-                                    BorderStrokeStyle.SOLID,
-                                    BorderStrokeStyle.SOLID,
-                                    CornerRadii.EMPTY,
-                                    new BorderWidths(1),
-                                    Insets.EMPTY
-                            )
-                    ));
 
                 }else{
                     button.setBorder(new Border(
@@ -128,8 +112,14 @@ public class GameGUI extends GridPane {
             NextChoiceDialog nextChoiceDialog = new NextChoiceDialog(
                     gameController,
                     () -> {
-                        gameController.startGame();
-                        update();
+                        NewGameDialog newGameDialog = new NewGameDialog(
+                                gameController,
+                                (amountOfFieldsX,amountOfFieldsY, difficulty) -> {
+                                    gameController.startGame(amountOfFieldsX,amountOfFieldsY, difficulty);
+                                    update();
+                                }
+                        );
+                        newGameDialog.show();
                         },
                     () -> {Platform.exit();}
             );
@@ -145,8 +135,14 @@ public class GameGUI extends GridPane {
             NextChoiceDialog nextChoiceDialog = new NextChoiceDialog(
                     gameController,
                     () -> {
-                        gameController.startGame();
-                        update();
+                            NewGameDialog newGameDialog = new NewGameDialog(
+                                    gameController,
+                                    (amountOfFieldsX,amountOfFieldsY, difficulty) -> {
+                                        gameController.startGame(amountOfFieldsX,amountOfFieldsY, difficulty);
+                                        update();
+                                    }
+                            );
+                            newGameDialog.show();
                         },
                     () -> {Platform.exit();}
             );
